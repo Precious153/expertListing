@@ -65,4 +65,16 @@ public class AuthService {
                 .lastName(user.getLastName())
                 .build();
     }
+
+    public com.example.expertListing.dto.UserInfoResponse getCurrentUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        
+        return com.example.expertListing.dto.UserInfoResponse.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .build();
+    }
 }

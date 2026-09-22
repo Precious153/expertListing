@@ -25,4 +25,11 @@ public class AuthController {
         AuthResponse data = authService.authenticateUser(request);
         return ResponseEntity.ok(ApiResponse.success("Login successful", data));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> getCurrentUser(
+            @org.springframework.security.core.annotation.AuthenticationPrincipal com.example.expertListing.security.UserPrincipal currentUser) {
+        UserInfoResponse data = authService.getCurrentUser(currentUser.getId());
+        return ResponseEntity.ok(ApiResponse.success("User information retrieved successfully", data));
+    }
 }

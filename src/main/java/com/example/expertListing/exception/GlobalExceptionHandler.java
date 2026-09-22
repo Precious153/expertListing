@@ -38,6 +38,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(ApiResponse.error("Validation failed", errors));
     }
 
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaxUploadSizeExceededException(org.springframework.web.multipart.MaxUploadSizeExceededException ex) {
+        return ResponseEntity.status(HttpStatus.PAYLOAD_TOO_LARGE)
+                .body(ApiResponse.error("Image exceeds maximum allowed size", null));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGlobalException(Exception ex) {
         log.error("An unexpected error occurred", ex);
