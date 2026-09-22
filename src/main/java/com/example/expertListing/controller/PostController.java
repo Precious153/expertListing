@@ -56,4 +56,12 @@ public class PostController {
         CommentResponse data = postService.addComment(currentUser.getId(), id, request);
         return ResponseEntity.ok(ApiResponse.success("Comment added successfully", data));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Void>> deletePost(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserPrincipal currentUser) {
+        postService.deletePost(currentUser.getId(), id);
+        return ResponseEntity.ok(ApiResponse.success("Post deleted successfully", null));
+    }
 }

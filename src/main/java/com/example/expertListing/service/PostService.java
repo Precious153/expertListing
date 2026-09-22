@@ -106,6 +106,22 @@ public class PostService {
         return mapToCommentResponse(comment);
     }
 
+    @Transactional
+    public void deletePost(Long userId, Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException("Post not found"));
+                
+        if (!post.getUser().getId().equals(userId)) {
+            throw new org.springframework.security.access.AccessDeniedException("You are not authorized to delete this post");
+        }
+        
+        // Delete associated comments and likes first
+        commentRepository.deleteByPost(post);
+        likeRepository.deleteByPost(post);
+        
+        postRepository.delete(post);
+    }
+
     private PostResponse mapToPostResponse(Post post) {
         long commentCount = commentRepository.countByPost(post);
         long likeCount = likeRepository.countByPost(post);
