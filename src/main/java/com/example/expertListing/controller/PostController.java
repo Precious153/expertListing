@@ -19,8 +19,10 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<PostResponse>>> getAllPosts() {
-        List<PostResponse> data = postService.getAllPosts();
+    public ResponseEntity<ApiResponse<PaginatedResponse<PostResponse>>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        PaginatedResponse<PostResponse> data = postService.getAllPosts(page, size);
         return ResponseEntity.ok(ApiResponse.success("Posts retrieved successfully", data));
     }
 

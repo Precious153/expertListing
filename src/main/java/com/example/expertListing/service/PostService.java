@@ -19,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import com.example.expertListing.dto.PaginatedResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +34,12 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<PostResponse> getAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(this::mapToPostResponse)
-                .collect(Collectors.toList());
+    public PaginatedResponse<PostResponse> getAllPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Post> postPage = postRepository.findAllByOrderByCreatedAtDesc(pageable);
+        
+        Page<PostResponse> responsePage = postPage.map(this::mapToPostResponse);
+        return PaginatedResponse.fromPage(responsePage);
     }
 
     @Transactional
