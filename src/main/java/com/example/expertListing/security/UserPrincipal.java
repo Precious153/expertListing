@@ -58,6 +58,6 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true; // Use emailVerified if you want to block login, or let AuthController handle it
+        return true;
     }
 }

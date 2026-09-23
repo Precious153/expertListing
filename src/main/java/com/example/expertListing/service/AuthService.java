@@ -35,11 +35,10 @@ public class AuthService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .emailVerified(true) // Set to true by default since we removed OTP
+                .emailVerified(true)
                 .build();
         userRepository.save(user);
 
-        // Optionally, auto-login the user upon registration
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setEmail(request.getEmail());
         loginRequest.setPassword(request.getPassword());
